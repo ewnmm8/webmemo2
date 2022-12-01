@@ -1,19 +1,55 @@
-/*$("textarea.column").on('keyup', function () {
-    // \nを検索して['\n', '\n', '\n', '\n']を返す。0個の時はnullを返してlengthがエラーになるので、nullの時は[]を返すようにする。
-    const n_num = (this.value.match(/\n/g) || []).length
-    //this.style.height = (n_num + 1) + 'em'
-    setTimeout(() => {
-        this.style.height = (n_num + 1) + 'em'
-    }, 0)
-})*/
-$("textarea.column").each(function () {
-    this.style.height = (this.value.match(/\n/g) || []).length + 1 + 'em'
-})
-$("textarea.column").on('keydown', function (e) {
+const line_height = 1.4
+
+function createTextarea (value = '') {
+    const textarea = $("<textarea>", {class: "column"}).get(0)
+    textarea.value = value
+    textarea.style.height = ((value.match(/\n/g) || []).length + 1) * line_height + 'em'
+    document.getElementsByTagName("main")[0].appendChild(textarea)
+}
+
+// textareaのheightの自動調整（cssのmin-heightで最低値を制御）
+$("main").on('keydown', "textarea", function (e) {
     if (e.key == "Enter") {
-        this.style.height = Number(this.style.height.slice(0, -2)) + 1 + 'em'
+        this.style.height = Number(this.style.height.slice(0, -2)) + line_height + 'em'
     }
     else if (e.key == "Backspace" && this.value.slice(-1) == '\n') {
-        this.style.height = Number(this.style.height.slice(0, -2)) - 1 + 'em'
+        this.style.height = Number(this.style.height.slice(0, -2)) - line_height + 'em'
+    }
+})
+
+// textareaのheightの自動調整　コピペ対応用
+$("main").on('keyup', "textarea", function () {
+    this.style.height = ((this.value.match(/\n/g) || []).length + 1) * line_height + 'em'
+})
+
+// 最後尾に何か入力された時、最後尾にtextareaを追加
+$("main").on('keyup', "textarea", function () {
+    if (this == $("textarea").last().get(0) && this.value != '') {
+        createTextarea()
+    }
+})
+
+// 最後尾とその次のtextareaが両方空白の時、最後尾を消す
+$("main").on('keyup', "textarea", function () {
+    while ($("textarea").get(-1).value == '' &&
+        $("textarea").get(-2).value == '') {
+        $("textarea").last().remove()
+    }
+})
+
+// セーブ
+$("main").on('keyup', function () {
+    const Memo2 = []
+    $("textarea").each(function () {
+        Memo2.push(this.value)
+    })
+    localStorage.setItem("Memo2", JSON.stringify({...Memo2}))
+})
+
+// localStorageから初期化
+$(window).on('load', function () {
+    const Memo2 = Object.values(JSON.parse(localStorage.getItem("Memo2") || '{"0":""}'))
+    for (const value of Memo2) {
+        createTextarea(value)
     }
 })
