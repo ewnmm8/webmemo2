@@ -1,0 +1,27 @@
+* {
+    font-size: 4vh;
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    text-align: center;
+}
+
+.column {
+    margin: 0.4em auto;
+}
+
+main {
+    display: flex;
+    flex-flow: column;
+}
+
+textarea {
+    resize: none;
+    overflow: hidden;
+    line-height: 1em;
+    width: 26em;
+    min-height: 4em;
+    max-width: 88%;
+}
