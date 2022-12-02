@@ -1,9 +1,8 @@
 const line_height = 1.4
 
 function createTextarea (value = '') {
-    const textarea = $("<textarea>", {class: "column"}).get(0)
+    const textarea = $("<textarea>", {class: "column", style: 'height: ' + ((value.match(/\n/g) || []).length + 1) * line_height + 'em;'}).get(0)
     textarea.value = value
-    textarea.style.height = ((value.match(/\n/g) || []).length + 1) * line_height + 'em'
     document.getElementsByTagName("main")[0].appendChild(textarea)
 }
 

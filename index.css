@@ -18,11 +18,12 @@ main {
 }
 
 textarea {
+    --line-height-value: 1.4em;
     resize: none;
     overflow: hidden;
-    line-height: 1.4em;
+    line-height: var(--line-height-value);
     width: 28em;
-    min-height: 5.6em;
+    min-height: calc(var(--line-height-value) * 4);
     max-width: 88vw;
 }
 
