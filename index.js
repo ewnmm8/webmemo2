@@ -11,12 +11,9 @@ $("main").on('keydown', "textarea", function (e) {
     if (e.key == "Enter") {
         this.style.height = Number(this.style.height.slice(0, -2)) + line_height + 'em'
     }
-    else if (e.key == "Backspace" && this.value.slice(-1) == '\n') {
-        this.style.height = Number(this.style.height.slice(0, -2)) - line_height + 'em'
-    }
 })
 
-// textareaのheightの自動調整　コピペ対応用
+// textareaのheightの自動調整　Backspace＆コピペ対応用
 $("main").on('keyup', "textarea", function () {
     this.style.height = ((this.value.match(/\n/g) || []).length + 1) * line_height + 'em'
 })
